@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Endurance": {
+      "commandName": "Project",
+      "commandLineArgs": "\"C:\\Users\\hemen\\source\\repos\\Endurance\\Endurance\\Mazes\\maze1.txt\" \"C:\\Users\\hemen\\source\\repos\\Endurance\\Endurance\\Mazes\\maze2.txt\""
+    }
+  }
+}
