@@ -5,17 +5,16 @@ namespace Endurance
 {
     public class PathComputer
     {
-        public Stack<(int, int)> ComputePath(List<List<int>> maze)
+        public Stack<(int, int)> ComputePath(List<List<(int, bool)>> maze)
         {
             var path = new Stack<(int, int)>();
-            var visitedPositions = new List<(int, int)>();
 
             for (var i = 0; i < maze.Count; ++i)
             {
-                if (maze[i][0] == 1)
+                if (maze[i][0] == (1, false))
                 {
                     path.Push((i, 0));
-                    visitedPositions.Add((i, 0));
+                    maze[i][0] = (1, true);
                     break;
                 }
                 if (i == maze.Count - 1)
@@ -24,13 +23,12 @@ namespace Endurance
                 }
             }
 
-            return ComputeRemainingPath(maze, path, visitedPositions);
+            return ComputeRemainingPath(maze, path);
         }
 
         private Stack<(int, int)> ComputeRemainingPath(
-            List<List<int>> maze,
-            Stack<(int, int)> path,
-            List<(int, int)> visitedPositions)
+            List<List<(int, bool)>> maze,
+            Stack<(int, int)> path)
         {
             if (path.Peek().Item2 == maze[0].Count - 1)
             {
@@ -40,39 +38,32 @@ namespace Endurance
             var x = path.Peek().Item1;
             var y = path.Peek().Item2;
 
-            if (maze[x][y + 1] == 1 &&
-                !visitedPositions.Contains((x, y + 1)))
+            if (maze[x][y + 1] == (1, false))
             {
                 path.Push((x, y + 1));
-                visitedPositions.Add((x, y + 1));
+                maze[x][y + 1] = (1, true);
             }
-            else if (x > 0 &&
-                maze[x - 1][y] == 1 &&
-                !visitedPositions.Contains((x - 1, y)))
+            else if (x > 0 && maze[x - 1][y] == (1, false))
             {
                 path.Push((x - 1, y));
-                visitedPositions.Add((x - 1, y));
+                maze[x - 1][y] = (1, true);
             }
-            else if (x < maze.Count - 1 &&
-                maze[x + 1][y] == 1 &&
-                !visitedPositions.Contains((x + 1, y)))
+            else if (x < maze.Count - 1 && maze[x + 1][y] == (1, false))
             {
                 path.Push((x + 1, y));
-                visitedPositions.Add((x + 1, y));
+                maze[x + 1][y] = (1, true);
             }
-            else if (y > 0 &&
-                maze[x][y - 1] == 1 &&
-                !visitedPositions.Contains((x, y - 1)))
+            else if (y > 0 && maze[x][y - 1] == (1, false))
             {
                 path.Push((x, y - 1));
-                visitedPositions.Add((x, y - 1));
+                maze[x][y - 1] = (1, false);
             }
             else
             {
                 path.Pop();
             }
 
-            return ComputeRemainingPath(maze, path, visitedPositions);
+            return ComputeRemainingPath(maze, path);
         }
     }
 }
